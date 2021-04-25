@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+const cTable = require('console.table');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -76,3 +77,8 @@ const allQuestions = () =>{
         }
     });
 };
+
+const viewAllEmp = () => {
+    let query = 'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary, manager.id';
+    query += 'FROM employee JOIN role ON ('
+}
