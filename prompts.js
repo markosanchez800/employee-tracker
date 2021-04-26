@@ -31,7 +31,7 @@ const allQuestions = () =>{
         name:'allchoices',
         type:'list',
         message:'What would you like to do?',
-        choices:['View All Employees','View All Employees By Department','View All Employees By Manager','Add Employee','Remove Employee','Update Employee Role','Update Employee Manager','View All Roles','Add Role','Remove Role'],
+        choices:['View All Employees','View All Employees By Department','View All Employees By Manager','View All Departments','Add Department','Add Employee','Remove Employee','Update Employee Role','Update Employee Manager','View All Roles','Add Role','Remove Role','Exit'],
     })
     .then((response)=>{
         switch(response.allchoices){
@@ -45,6 +45,14 @@ const allQuestions = () =>{
 
             case 'View All Employees By Manager':
                 viewByMan();
+                break;
+
+            case 'View All Departments':
+                viewDeps();
+                break;
+
+            case 'Add Department':
+                addDep();
                 break;
 
             case 'Add Employee':
@@ -74,7 +82,12 @@ const allQuestions = () =>{
             case 'Remove Role':
                 removeRole();
                 break;
+
+            case 'Exit':
+                connection.end();
+                break;
         }
+
     });
 };
 
@@ -92,6 +105,12 @@ const viewAllEmp = () => {
     });
 };
 
-const viewByDep = () => {
-    
-}
+const viewDeps = () => {
+    connection.query(
+        `SELECT * FROM department`,
+        (err,res) => {
+            if(err)throw(err);
+            console.table(res);
+            allQuestions();
+        });
+};
