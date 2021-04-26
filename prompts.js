@@ -79,6 +79,19 @@ const allQuestions = () =>{
 };
 
 const viewAllEmp = () => {
-    let query = 'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary, manager.id';
-    query += 'FROM employee JOIN role ON ('
+   connection.query(
+       `SELECT employee.employee_id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, CONCAT(a.first_name," ",a.last_name) AS manager FROM employee 
+       LEFT JOIN employee a ON a.employee_id = employee.manager_id
+       LEFT JOIN role ON employee.role_id = role.role_id 
+       LEFT JOIN department ON role.department_id = department.department_id 
+   `,
+   (err,res) => {
+        if(err)throw(err);
+        console.table(res);
+        allQuestions();
+    });
+};
+
+const viewByDep = () => {
+    
 }

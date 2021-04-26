@@ -4,27 +4,27 @@ CREATE DATABASE employees_DB;
 USE employees_DB;
 
 CREATE TABLE department (
-    id INTEGER AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL,
-    PRIMARY KEY (id)
+    department_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
-    id INTEGER AUTO_INCREMENT,
+    role_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
     department_id INTEGER NOT NULL,
-    PRIMARY KEY (id)
+    FOREIGN KEY (department_id) REFERENCES department(department_id) ON DELETE CASCADE
 );
 
 CREATE TABLE employee (
-    id INTEGER AUTO_INCREMENT,
+    employee_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    role_id INTEGER NOT NULL,
-    manager_id INTEGER NOT NULL,
-    PRIMARY KEY (id)
+    role_id INTEGER,
+    manager_id INTEGER,
+    FOREIGN KEY (role_id) REFERENCES role (role_id) ON DELETE CASCADE
 );
+
 
 -- initial departments
 INSERT INTO department (name) values ('Sales');
@@ -51,4 +51,3 @@ INSERT INTO employee (first_name,last_name,role_id,manager_id) values ('Sanna','
 INSERT INTO employee (first_name,last_name,role_id,manager_id) values ('Micheal','Cera',6,2);
 INSERT INTO employee (first_name,last_name,role_id,manager_id) values ('Charles','Mingus',7,3);
 INSERT INTO employee (first_name,last_name,role_id,manager_id) values ('Freddie','Gibbs',8,4);
-
