@@ -153,7 +153,27 @@ const addRole = () => {
                 allQuestions();
          });
         });
-    }
+    };
+
+    const addDep = () => {
+        inquirer
+        .prompt([
+           {
+               name:'department',
+               type:'input',
+               message:'What is the new department called?'
+           } 
+        ])
+           .then((response)=>{
+               connection.query(
+               `INSERT INTO department (name) VALUES ("${response.department}")`,
+               (err,res)=>{
+                   if(err)throw(err);
+                   console.log(`${response.department} added!`);
+                   allQuestions();
+               });
+           });  
+    };
  
 // const viewByDep = () => {
 //     let query = `SELECT * FROM employee WHERE department_id = ${}`
