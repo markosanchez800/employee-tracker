@@ -51,11 +51,11 @@ const allQuestions = () =>{
                 viewDeps();
                 break;
 
-            case 'Add Department': //min req !!!!
+            case 'Add Department': //done
                 addDep();
                 break;
 
-            case 'Add Employee': //min req !!!!!
+            case 'Add Employee': //done
                 addEmp();
                 break;
 
@@ -75,7 +75,7 @@ const allQuestions = () =>{
                 viewRoles();
                 break;
 
-            case 'Add Role': //min req !!!!
+            case 'Add Role': //done
                 addRole();
                 break;
 
@@ -208,6 +208,43 @@ const addRole = () => {
                     allQuestions();
                 }
             )
+        })
+    }
+
+    const updateEmpRole = () => {
+        connection.query(
+            `SELECT employee_id,first_name FROM employee`,
+            (err,res) => {
+                if(err)throw(err);
+                console.table(res);
+            });
+            connection.query(
+                `SELECT * FROM role`,
+                (err,res) => {
+                    if(err)throw(err);
+                    console.table(res);
+            });
+        inquirer
+        .prompt([
+            {
+                name:'pickedEmp',
+                type:'input',
+                message:'Employee ID of the worker whos role you wish to update?'
+            },
+            {
+                name:'newRole',
+                type:'input',
+                message:'ID of role to change to?'
+            }
+        ])
+        .then((response)=>{
+            connection.query(
+                `UPDATE employee SET role_id = ${response.newRole} WHERE employee_id = ${response.pickedEmp}`,
+            (err,res)=>{
+                if(err)throw(err);
+                console.log('Role Updated!');
+                allQuestions();
+            })
         })
     }
  
