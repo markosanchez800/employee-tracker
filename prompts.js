@@ -45,20 +45,12 @@ const allQuestions = () =>{
         name:'allchoices',
         type:'list',
         message:'What would you like to do?',
-        choices:['View All Employees','View All Employees By Department','View All Employees By Manager','View All Departments','Add Department','Add Employee','Remove Employee','Update Employee Role','Update Employee Manager','View All Roles','Add Role','Remove Role','Exit'],
+        choices:['View All Employees','View All Departments','Add Department','Add Employee','Remove Employee','Update Employee Role','Update Employee Manager','View All Roles','Add Role','Remove Role','Exit'],
     })
     .then((response)=>{
         switch(response.allchoices){
             case 'View All Employees': //done
                 viewAllEmp();
-                break;
-
-            case 'View All Employees By Department':
-                viewByDep();
-                break;
-
-            case 'View All Employees By Manager':
-                viewByMan();
                 break;
 
             case 'View All Departments': //done
@@ -73,7 +65,7 @@ const allQuestions = () =>{
                 addEmp();
                 break;
 
-            case 'Remove Employee':
+            case 'Remove Employee': //done
                 remEmp();
                 break;
 
@@ -93,7 +85,7 @@ const allQuestions = () =>{
                 addRole();
                 break;
 
-            case 'Remove Role':
+            case 'Remove Role': //done
                 removeRole();
                 break;
 
@@ -233,7 +225,7 @@ const addRole = () => {
                 console.table(res);
             });
             connection.query(
-                `SELECT * FROM role`,
+                `SELECT role_id,title FROM role`,
                 (err,res) => {
                     if(err)throw(err);
                     console.table(res);
@@ -321,9 +313,32 @@ const addRole = () => {
             })
         })
     }
+
+    const removeRole = () => {
+        connection.query(
+            `SELECT role_id,title FROM role`,
+            (err,res) => {
+                if(err)throw(err);
+                console.table(res);
+            });
+
+        inquirer
+        .prompt([
+            {
+                name:'pickedRole',
+                type:'input',
+                message:'Role ID of the position youd like to remove?'
+            },
+        ])
+        .then((response)=>{
+            connection.query(
+                `DELETE FROM role WHERE role_id = ${response.pickedRole}`,
+            (err,res)=>{
+                if(err)throw(err);
+                console.log('Role Removed!');
+                allQuestions();
+            })
+        })
+    }
  
-// const viewByDep = () => {
-//     let query = `SELECT * FROM employee WHERE department_id = ${}`
-//     connection.query()
-// }
 
