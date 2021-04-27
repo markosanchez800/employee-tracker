@@ -1,7 +1,9 @@
+//dependencies
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 
+//connecting file to mySQL server
 const connection = mysql.createConnection({
     host: 'localhost',
    
@@ -14,12 +16,14 @@ const connection = mysql.createConnection({
     database:'employees_DB',
 });
 
+//actions to commence on application start
 connection.connect((err)=>{
     if(err)throw(err);
     startLogo();
     allQuestions();
 });
 
+//Text design to introduce user to application
 function startLogo(){
 console.log(`
 ███████╗███╗░░░███╗██████╗░██╗░░░░░░█████╗░██╗░░░██╗███████╗███████╗
@@ -38,6 +42,7 @@ console.log(`
 `);
 };
 
+//all different functions possible, listed through inquirer prompts and switch cases for each selection
 const allQuestions = () =>{
     inquirer
     .prompt(
@@ -45,7 +50,7 @@ const allQuestions = () =>{
         name:'allchoices',
         type:'list',
         message:'What would you like to do?',
-        choices:['View All Employees','View All Employees By Department','View All Employees By Manager','View All Departments','Add Department','Add Employee','Remove Employee','Update Employee Role','Update Employee Manager','View All Roles','Add Role','Remove Role','Exit'],
+        choices:['View All Employees','View All Employees By Manager','View All Departments','Add Department','Add Employee','Remove Employee','Update Employee Role','Update Employee Manager','View All Roles','Add Role','Remove Role','Exit'],
     })
     .then((response)=>{
         switch(response.allchoices){
@@ -53,11 +58,7 @@ const allQuestions = () =>{
                 viewAllEmp();
                 break;
 
-            case 'View All Employees By Department':
-                viewByDep();
-                break;
-
-            case 'View All Employees By Manager':
+            case 'View All Employees By Manager': //done
                 viewByMan();
                 break;
 
@@ -104,7 +105,7 @@ const allQuestions = () =>{
 
     });
 };
-
+//joins all three tables together to give back correct and comprehensive data
 const viewAllEmp = () => {
    connection.query(
        `SELECT employee.employee_id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, CONCAT(a.first_name," ",a.last_name) AS manager FROM employee 
@@ -224,7 +225,7 @@ const addRole = () => {
             )
         })
     }
-
+//gives user the reference tables and then prompts the inquiries for a change to be made
     const updateEmpRole = () => {
         connection.query(
             `SELECT employee_id,first_name FROM employee`,
@@ -262,7 +263,7 @@ const addRole = () => {
             })
         })
     }
-
+//gives user the reference tables and then prompts the inquiries for a change to be made
     const updateEmpMan = () => {
         connection.query(
             `SELECT employee_id,first_name FROM employee`,
@@ -294,7 +295,7 @@ const addRole = () => {
             })
         })
     }
-
+//gives user the reference tables and then prompts the inquiries for a change to be made
     const remEmp = () => {
         connection.query(
             `SELECT employee_id,first_name FROM employee`,
@@ -321,7 +322,7 @@ const addRole = () => {
             })
         })
     }
-
+//gives user the reference tables and then prompts the inquiries for a change to be made
     const removeRole = () => {
         connection.query(
             `SELECT role_id,title FROM role`,
