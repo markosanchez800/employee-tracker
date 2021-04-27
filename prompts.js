@@ -35,7 +35,7 @@ const allQuestions = () =>{
     })
     .then((response)=>{
         switch(response.allchoices){
-            case 'View All Employees':
+            case 'View All Employees': //done
                 viewAllEmp();
                 break;
 
@@ -47,15 +47,15 @@ const allQuestions = () =>{
                 viewByMan();
                 break;
 
-            case 'View All Departments':
+            case 'View All Departments': //done
                 viewDeps();
                 break;
 
-            case 'Add Department':
+            case 'Add Department': //min req !!!!
                 addDep();
                 break;
 
-            case 'Add Employee':
+            case 'Add Employee': //min req !!!!!
                 addEmp();
                 break;
 
@@ -63,7 +63,7 @@ const allQuestions = () =>{
                 remEmp();
                 break;
 
-            case 'Update Employee Role':
+            case 'Update Employee Role': // min req !!!!
                 updateEmpRole();
                 break;
 
@@ -71,11 +71,11 @@ const allQuestions = () =>{
                 updateEmpMan();
                 break;
 
-            case 'View All Roles':
+            case 'View All Roles': //done
                 viewRoles();
                 break;
 
-            case 'Add Role':
+            case 'Add Role': //min req !!!!
                 addRole();
                 break;
 
@@ -83,7 +83,7 @@ const allQuestions = () =>{
                 removeRole();
                 break;
 
-            case 'Exit':
+            case 'Exit': //done
                 connection.end();
                 break;
         }
@@ -115,7 +115,7 @@ const viewDeps = () => {
         });
 };
 
-viewRoles = () => {
+const viewRoles = () => {
     connection.query(
         `SELECT * FROM role`,
         (err,res) => {
@@ -124,3 +124,39 @@ viewRoles = () => {
             allQuestions();
         });
 };
+
+const addRole = () => {
+    inquirer
+    .prompt([
+        {
+            name: 'title',
+            type:'input',
+            message:'Whats the role'
+        },
+        {
+            name:'salary',
+            type:'input',
+            message:'Salary in integer form: '
+        },
+        {
+            name:'department_id',
+            type:'input',
+            message:'Department ID of the role?'
+        }
+    ])
+        .then((response)=>{
+           connection.query(
+                `INSERT INTO role (title,salary,department_id) VALUES ("${response.title}",${response.salary},${response.department_id})`,
+                (err,res)=> { 
+                if(err)throw(err);
+                console.log(`${response.title} added!`);
+                allQuestions();
+         });
+        });
+    }
+ 
+// const viewByDep = () => {
+//     let query = `SELECT * FROM employee WHERE department_id = ${}`
+//     connection.query()
+// }
+
