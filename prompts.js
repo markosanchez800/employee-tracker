@@ -63,7 +63,7 @@ const allQuestions = () =>{
                 remEmp();
                 break;
 
-            case 'Update Employee Role': // min req !!!!
+            case 'Update Employee Role': //done
                 updateEmpRole();
                 break;
 
@@ -224,6 +224,7 @@ const addRole = () => {
                     if(err)throw(err);
                     console.table(res);
             });
+
         inquirer
         .prompt([
             {
@@ -243,6 +244,38 @@ const addRole = () => {
             (err,res)=>{
                 if(err)throw(err);
                 console.log('Role Updated!');
+                allQuestions();
+            })
+        })
+    }
+
+    const updateEmpMan = () => {
+        connection.query(
+            `SELECT employee_id,first_name FROM employee`,
+            (err,res) => {
+                if(err)throw(err);
+                console.table(res);
+            });
+
+        inquirer
+        .prompt([
+            {
+                name:'pickedEmp',
+                type:'input',
+                message:'Employee ID of the worker whos manager you wish to update?'
+            },
+            {
+                name:'newMan',
+                type:'input',
+                message:'ID of manager to change to?'
+            }
+        ])
+        .then((response)=>{
+            connection.query(
+                `UPDATE employee SET manager_id = ${response.newMan} WHERE employee_id = ${response.pickedEmp}`,
+            (err,res)=>{
+                if(err)throw(err);
+                console.log('Manager Updated!');
                 allQuestions();
             })
         })
