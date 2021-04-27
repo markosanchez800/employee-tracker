@@ -294,6 +294,33 @@ const addRole = () => {
             })
         })
     }
+
+    const remEmp = () => {
+        connection.query(
+            `SELECT employee_id,first_name FROM employee`,
+            (err,res) => {
+                if(err)throw(err);
+                console.table(res);
+            });
+
+        inquirer
+        .prompt([
+            {
+                name:'pickedEmp',
+                type:'input',
+                message:'Employee ID of the worker who youd like to remove?'
+            },
+        ])
+        .then((response)=>{
+            connection.query(
+                `DELETE FROM employee WHERE employee_id = ${response.pickedEmp}`,
+            (err,res)=>{
+                if(err)throw(err);
+                console.log('Employee Removed!');
+                allQuestions();
+            })
+        })
+    }
  
 // const viewByDep = () => {
 //     let query = `SELECT * FROM employee WHERE department_id = ${}`
