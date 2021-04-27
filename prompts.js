@@ -174,6 +174,42 @@ const addRole = () => {
                });
            });  
     };
+
+    const addEmp = () => {
+        inquirer
+        .prompt([
+            {
+                name:'firstname',
+                type:'input',
+                message:'Employees first name?'
+            },
+            {
+                name:'lastname',
+                type:'input',
+                message:'Employees last name?'
+            },
+            {
+                name:'roleid',
+                type:'input',
+                message:'Employees role id? (Reference Employee Chart)'
+            },
+            {
+                name:'managerid',
+                type:'input',
+                message:'Employees managers id? (Reference Employee Chart)'
+            },
+        ])
+        .then((response)=>{
+            connection.query(
+                `INSERT INTO employee (first_name,last_name,role_id,manager_id) VALUES ("${response.firstname}","${response.lastname}",${response.roleid},${response.managerid})`,
+                (err,res)=>{
+                    if(err)throw(err);
+                    console.log(`${response.firstname} ${response.lastname} added!`);
+                    allQuestions();
+                }
+            )
+        })
+    }
  
 // const viewByDep = () => {
 //     let query = `SELECT * FROM employee WHERE department_id = ${}`
